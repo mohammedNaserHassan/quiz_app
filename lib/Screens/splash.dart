@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:quiz_app/Screens/Login.dart';
+import 'package:quiz_app/Model/router.dart';
 
 import 'home.dart';
 
@@ -17,10 +17,8 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 4), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => Homepage(),
-      ));
+    Timer.periodic(Duration(seconds: 4), (x) {
+     AppRouter.appRouter.pushFunction(Homepage());
     });
   }
 
@@ -56,7 +54,7 @@ class _SplashscreenState extends State<Splashscreen> {
                     left: 0.w,
                     child: IconButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                        exit(0);
                         },
                         icon: Icon(
                           Icons.arrow_back,

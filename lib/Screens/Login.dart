@@ -1,18 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_app/Data/data.dart';
 import 'package:quiz_app/Screens/splash.dart';
 import 'package:quiz_app/Widgets/social.dart';
 
-import 'home.dart';
-
 class LoginPage extends StatelessWidget {
   final GlobalKey<FormState> _form = GlobalKey();
-  final _password_controller = TextEditingController();
-  final email = TextEditingController();
-  Map<String, String> _auth_data = {
-    'email': '',
-    'password': '',
-  };
+  TextEditingController _password_controller = TextEditingController();
+  TextEditingController email = TextEditingController();
+
 
   LoginPage();
 
@@ -71,9 +67,6 @@ class LoginPage extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                onSaved: (value) {
-                                  _auth_data['email'] = value;
-                                },
                               ),
                             ),
                             Container(
@@ -104,9 +97,6 @@ class LoginPage extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                onSaved: (value) {
-                                  _auth_data['password'] = value;
-                                },
                               ),
                             ),
                             Container(
@@ -124,6 +114,7 @@ class LoginPage extends StatelessWidget {
                                         MaterialPageRoute(
                                             builder: (x) => Splashscreen()));
                                   }
+                                  Name =email.text;
                                 },
                                 child: Text(
                                   ' Login',

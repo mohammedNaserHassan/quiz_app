@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:easy_localization/easy_localization.dart';
 List<String> images = [
   "images/py.png",
   "images/java.png",
@@ -19,3 +22,4 @@ List<String> imagess = [
   "images/good.png",
   "images/bad.png",
 ];
+String Name='';

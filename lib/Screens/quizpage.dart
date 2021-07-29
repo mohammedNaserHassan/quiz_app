@@ -193,7 +193,7 @@ class _quizpageState extends State<quizpage> {
                           flex: 5,
                           child: Container(
                             padding: EdgeInsets.only(
-                                left: 15.w, right: 15.w, top: 20.h),
+                                left: 10.w, right: 10.w, top: 20.h),
                             alignment: Alignment.bottomLeft,
                             child: Row(
                               mainAxisAlignment: widget.locale==Locale('en')?MainAxisAlignment.spaceBetween:MainAxisAlignment.start,

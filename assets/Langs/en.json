@@ -15,5 +15,11 @@
   "t2": "By answering these questions , we can help you to find you the location of your dream vocation",
   "qu": "Question",
   "Next": "Next",
-  "Timer": "Timer"
+  "Timer": "Timer",
+  "Result": "Result",
+  "Continue": "Continue",
+  "20": "You Should Try Hard",
+  "35": "You Can Do Better",
+  "else": "You Did Very Well",
+  "You Scored": "You Scored"
 }
