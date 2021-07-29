@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:quiz_app/Screens/Login.dart';
 
 import 'home.dart';
 
@@ -14,17 +17,22 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 30), () {
+    Timer(Duration(seconds: 4), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => Homepage(),
       ));
     });
   }
 
-  // added test yourself
-  // and made the text to align at center
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(
+        BoxConstraints(
+          maxWidth: 360,
+          maxHeight: 690,
+        ),
+        designSize: Size(360, 690),
+        orientation: Orientation.portrait);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -61,7 +69,7 @@ class _SplashscreenState extends State<Splashscreen> {
           Container(
               margin: EdgeInsets.symmetric(horizontal: 30.w),
               child: Text(
-                'What\’s Your Dream Holiday Destinations? ',
+                't1'.tr(),
                 style: TextStyle(
                     fontSize: 30.sp,
                     fontWeight: FontWeight.bold,
@@ -73,7 +81,7 @@ class _SplashscreenState extends State<Splashscreen> {
           Container(
               margin: EdgeInsets.symmetric(horizontal: 35.w),
               child: Text(
-                'By answering these questions , we can help you to find you the location of your dream vocation',
+                't2'.tr(),
                 style: TextStyle(
                     fontSize: 17.sp, color: Colors.black.withOpacity(0.4)),
               )),
@@ -116,10 +124,10 @@ class _SplashscreenState extends State<Splashscreen> {
                   child: Container(
                     width: 200.w,
                     height: 100.h,
-                    margin: EdgeInsets.only(left: 88.w, top: 63.h),
+                    margin: EdgeInsets.only(left: 88.w, top: 55.h),
                     child: Center(
                         child: Text(
-                      'Start Quiz',
+                      'button'.tr(),
                       style: TextStyle(color: Colors.white, fontSize: 25.sp),
                     )),
                     decoration: BoxDecoration(

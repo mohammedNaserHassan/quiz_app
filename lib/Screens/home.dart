@@ -14,8 +14,9 @@ class _HomepageState extends State<Homepage> with  TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     Locale local = EasyLocalization.of(context).locale;
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown, DeviceOrientation.portraitUp
+    ]);
     return Scaffold(
       appBar: AppBar(
         actions: [

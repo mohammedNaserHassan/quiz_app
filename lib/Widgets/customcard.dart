@@ -18,7 +18,7 @@ class customcard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => getjson(langname, local),
+            builder: (context) => getjson(langname, local)
           ));
         },
         child: Material(
@@ -67,7 +67,7 @@ class customcard extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 18.0.sp,
                         color: Colors.white,
-                        fontFamily: "Alike"),
+                    ),
                     maxLines: 5,
                     textAlign: TextAlign.justify,
                   ),

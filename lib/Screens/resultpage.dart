@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quiz_app/Data/data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'home.dart';
@@ -6,7 +7,7 @@ import 'home.dart';
 class resultpage extends StatefulWidget {
   int marks;
 
-  resultpage({Key key, @required this.marks}) : super(key: key);
+  resultpage({this.marks});
 
   @override
   _resultpageState createState() => _resultpageState(marks);
@@ -36,6 +37,9 @@ class _resultpageState extends State<resultpage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown, DeviceOrientation.portraitUp
+    ]);
     return Scaffold(
       appBar: AppBar(
         title: Text(

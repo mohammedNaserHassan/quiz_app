@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiz_app/Screens/home.dart';
 import 'package:quiz_app/Screens/resultpage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class quizpage extends StatefulWidget {
   final List mydata;
@@ -23,7 +23,7 @@ class _quizpageState extends State<quizpage> {
 
   _quizpageState(this.mydata);
 
-  double percent = 0.1;
+  double percent = 0.02;
   Color right = Colors.orange,
       wrong = Colors.red,
       colortoshow = Colors.indigoAccent;
@@ -38,7 +38,6 @@ class _quizpageState extends State<quizpage> {
     "d": Colors.white,
   };
 
-//
   genrandomarray() {
     var distinctIds = [];
     var rand = new Random();
@@ -53,7 +52,6 @@ class _quizpageState extends State<quizpage> {
     }
   }
 
-//
   void starttimer() async {
     const onesec = Duration(seconds: 1);
     Timer.periodic(onesec, (Timer t) {
@@ -81,9 +79,8 @@ class _quizpageState extends State<quizpage> {
         j++;
         counter++;
       } else {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => resultpage(marks: marks),
-        ));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => resultpage(marks: marks)));
       }
       btncolor["a"] = Colors.white;
       btncolor["b"] = Colors.white;
@@ -128,8 +125,9 @@ class _quizpageState extends State<quizpage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown, DeviceOrientation.portraitUp
+    ]);
     return WillPopScope(
       onWillPop: () {
         return showDialog(
@@ -160,7 +158,7 @@ class _quizpageState extends State<quizpage> {
               left: 30.w,
               child: Container(
                 child: Text(
-                  'Question ${counter}/10',
+                  'qu'.tr()+"${counter}/10",
                   style: TextStyle(color: Colors.white, fontSize: 20.sp),
                 ),
               ),
@@ -197,11 +195,16 @@ class _quizpageState extends State<quizpage> {
                             padding: EdgeInsets.only(
                                 left: 15.w, right: 15.w, top: 20.h),
                             alignment: Alignment.bottomLeft,
-                            child: Text(
-                              mydata[0][i.toString()],
-                              style: TextStyle(
-                                fontSize: 12.0.sp,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: widget.locale==Locale('en')?MainAxisAlignment.spaceBetween:MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  mydata[0][i.toString()],
+                                  style: TextStyle(
+                                    fontSize: 12.0.sp,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -227,11 +230,10 @@ class _quizpageState extends State<quizpage> {
                           child: Container(
                             margin: EdgeInsets.only(right: 250.w),
                             child: Text(
-                              'Timer :${showtimer}',
+                              'Timer'.tr()+':${showtimer}',
                               style: TextStyle(
                                 fontSize: 17.0.sp,
                                 fontWeight: FontWeight.w700,
-                                fontFamily: 'Times New Roman',
                               ),
                             ),
                           ),
@@ -244,7 +246,7 @@ class _quizpageState extends State<quizpage> {
                     right: 0.w,
                     child: InkWell(
                       onTap: () {
-                        nextquestion();
+                       nextquestion();
                         setState(() {
                           percent += 0.1;
                         });
@@ -255,7 +257,7 @@ class _quizpageState extends State<quizpage> {
                         margin: EdgeInsets.only(left: 88.w, top: 63.h),
                         child: Center(
                             child: Text(
-                          'Next',
+                          'Next'.tr(),
                           style:
                               TextStyle(color: Colors.white, fontSize: 25.sp),
                         )),
@@ -276,8 +278,9 @@ class _quizpageState extends State<quizpage> {
                 top: 5.h,
                 left: -20.w,
                 child: TextButton(
-                  onPressed: (){
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (x)=>Homepage()));
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (x) => Homepage()));
                   },
                   child: Image.asset(
                     'images/x.png',

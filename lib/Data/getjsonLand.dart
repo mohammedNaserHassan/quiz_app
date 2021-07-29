@@ -1,12 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:quiz_app/Screens/quizpage.dart';
 
-class getjson extends StatelessWidget {
+class getjsonLand extends StatelessWidget {
   String langname;
   Locale local;
 
-  getjson(this.langname, this.local);
+  getjsonLand(this.langname, this.local);
 
   String assettoload;
 
@@ -55,7 +56,7 @@ class getjson extends StatelessWidget {
     setasset();
     return FutureBuilder(
       future:
-          DefaultAssetBundle.of(context).loadString(assettoload, cache: false),
+      DefaultAssetBundle.of(context).loadString(assettoload, cache: false),
       builder: (context, snapshot) {
         List mydata = json.decode(snapshot.data.toString());
         if (mydata == null) {
