@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:quiz_app/Model/router.dart';
-
 import 'home.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -18,7 +16,7 @@ class _SplashscreenState extends State<Splashscreen> {
   void initState() {
     super.initState();
     Timer.periodic(Duration(seconds: 4), (x) {
-     AppRouter.appRouter.pushFunction(Homepage());
+    Navigator.of(context).push(MaterialPageRoute(builder: (x)=>Homepage()));
     });
   }
 

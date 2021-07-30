@@ -1,15 +1,15 @@
 [
     {
         "1": "What Will Be The Output Of the Following Code ?\na = \"p\" * 3\nprint(a)",
-        "2": "Which function finds out the Variable type in Python ?",
-        "3": "Which of the following keyword is used to define a function in Python ?",
-        "4": "Which of the following is a print Function in Python ?",
-        "5": "Which function finds out the Variable type in Python ?",
-        "6": "Which of the following keyword is used to define a function in Python ?",
-        "7": "Which function finds out the Variable type in Python ?",
+        "2": "Which function finds out the\n Variable type in Python ?",
+        "3": "Which of the following keyword \nis used to define a function in Python ?",
+        "4": "Which of the following is a\n print Function in Python ?",
+        "5": "Which function finds out the \nVariable type in Python ?",
+        "6": "Which of the following keyword \nis used to define a function in Python ?",
+        "7": "Which function finds out the\n Variable type in Python ?",
         "8": "Which of the following keyword \nis used to define a function in Python ?",
-        "9": "Which function finds out the Variable type in Python ?",
-        "10": "Which of the following keyword is used to define a function in Python ?"
+        "9": "Which function finds out the \nVariable type in Python ?",
+        "10": "Which of the following keyword\n is used to define a function in Python ?"
     },
     {
         "1": {

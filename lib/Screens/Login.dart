@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quiz_app/Data/data.dart';
+import 'package:quiz_app/Model/Person.dart';
+import 'package:quiz_app/Model/Sql_helper.dart';
 import 'package:quiz_app/Screens/splash.dart';
 import 'package:quiz_app/Widgets/social.dart';
 
@@ -14,6 +17,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown, DeviceOrientation.portraitUp
+    ]);
     return Scaffold(
         backgroundColor: Color.fromRGBO(46, 100, 180, 1),
         body: SingleChildScrollView(
@@ -107,9 +113,10 @@ class LoginPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(40),
                               ),
                               child: TextButton(
-                                onPressed: () {
-                                  if (!email.text.isEmpty &&
-                                      !_password_controller.text.isEmpty) {
+                                onPressed: () async{
+                                  await DbHelper.x.getTablesNames();
+                                  if (email.text.isNotEmpty &&_password_controller.text.isNotEmpty) {
+                      rowCount =  await  DbHelper.x.insertPerson(Person(email: email.text,password:_password_controller.text));
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (x) => Splashscreen()));
