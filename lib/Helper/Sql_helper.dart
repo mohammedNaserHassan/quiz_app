@@ -13,6 +13,7 @@ class DbHelper {
   static final String PersonIdColumnName = 'id';
   static final String PersonEmailColumnName = 'email';
   static final String PersonPasswordColumnName = 'password';
+  static final String PersonNameColumnName = 'name';
 
   intiateDatabase() async {
     database = await getDatBaseConnection();
@@ -28,14 +29,15 @@ class DbHelper {
     }, onCreate: (db, v) async{
      await db.execute(
           '''CREATE TABLE $PersonTapleName ($PersonIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT, 
-          $PersonEmailColumnName TEXT, $PersonPasswordColumnName TEXT)''');
+          $PersonEmailColumnName TEXT,$PersonNameColumnName TEXT, $PersonPasswordColumnName TEXT)''');
     });
     return database;
   }
 
-  insertPerson(Person person) async {
+  Future<int> insertPerson(Person person) async {
     int rownum = await database.insert(PersonTapleName, person.toMap());
     print(rownum);
+    return rownum;
   }
 
   Future<List<Person>> getAllPersons() async {
@@ -60,10 +62,11 @@ class DbHelper {
         where: 'id=?', whereArgs: [person.id]);
   }
 
-  getTablesNames() async {
+  Future<List<String>> getTablesNames() async {
     List<Map<String, Object>> tables = await database
         .query('sqlite_master', where: 'type=?', whereArgs: ['table']);
     List<String> tablesNames = tables.map((e) => e['name'].toString()).toList();
     print(tablesNames);
+    return tablesNames;
   }
 }

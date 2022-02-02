@@ -1,133 +1,35 @@
-import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:quiz_app/Screens/home.dart';
-import 'package:quiz_app/Screens/resultpage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:quiz_app/Services/Router.dart';
+import 'package:quiz_app/Widgets/choice.dart';
+import 'package:quiz_app/provider.dart';
 
 class quizpage extends StatefulWidget {
-  final List mydata;
-  Locale locale;
-
-  quizpage({this.mydata, this.locale});
+  quizpage();
 
   @override
-  _quizpageState createState() => _quizpageState(mydata);
+  _quizpageState createState() => _quizpageState();
 }
 
 class _quizpageState extends State<quizpage> {
-  final List mydata;
-
-  _quizpageState(this.mydata);
-
-  double percent = 0.02;
-  Color right = Colors.orange,
-      wrong = Colors.red,
-      colortoshow = Colors.indigoAccent;
-  int i = 1, j = 1, timer = 30, marks = 0, counter = 1;
-  bool disableAnswer = false, canceltimer = false, state_answer = false;
-  String showtimer = "30";
-  var random_array;
-  Map<String, Color> btncolor = {
-    "a": Colors.white,
-    "b": Colors.white,
-    "c": Colors.white,
-    "d": Colors.white,
-  };
-
-  genrandomarray() {
-    var distinctIds = [];
-    var rand = new Random();
-    for (int i = 0;;) {
-      distinctIds.add(rand.nextInt(10));
-      random_array = distinctIds.toSet().toList();
-      if (random_array.length < 10) {
-        continue;
-      } else {
-        break;
-      }
-    }
-  }
-
-  void starttimer() async {
-    const onesec = Duration(seconds: 1);
-    Timer.periodic(onesec, (Timer t) {
-      setState(() {
-        if (timer < 1) {
-          t.cancel();
-          nextquestion();
-        } else if (canceltimer == true) {
-          t.cancel();
-        } else {
-          timer = timer - 1;
-        }
-        showtimer = timer.toString();
-      });
-    });
-  }
-
-//
-  void nextquestion() {
-    canceltimer = false;
-    timer = 30;
-    setState(() {
-      if (j < 10) {
-        i = random_array[j];
-        j++;
-        counter++;
-      } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => resultpage(marks: marks)));
-      }
-      btncolor["a"] = Colors.white;
-      btncolor["b"] = Colors.white;
-      btncolor["c"] = Colors.white;
-      btncolor["d"] = Colors.white;
-      disableAnswer = false;
-    });
-    starttimer();
-  }
-
-//
-  void checkanswer(String k) {
-    if (mydata[2][i.toString()] == mydata[1][i.toString()][k]) {
-      marks = marks + 5;
-      colortoshow = right;
-    } else {
-      colortoshow = wrong;
-    }
-    setState(() {
-      percent += 0.1;
-      btncolor[k] = colortoshow;
-      canceltimer = true;
-      disableAnswer = true;
-      state_answer = !state_answer;
-    });
-    Timer(Duration(seconds: 2), nextquestion);
-  }
+  _quizpageState();
 
   @override
   void initState() {
-    starttimer();
-    genrandomarray();
     super.initState();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) { });
+    Provider.of<myProvider>(context, listen: false).genrandomarray();
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitDown, DeviceOrientation.portraitUp
-    ]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
     return WillPopScope(
       onWillPop: () {
         return showDialog(
@@ -149,201 +51,148 @@ class _quizpageState extends State<quizpage> {
                   ],
                 ));
       },
-      child: Scaffold(
-        backgroundColor: Color(0xff5F66D0),
-        body: Stack(
-          children: [
-            Positioned(
-              top: 104.h,
-              left: 30.w,
-              child: Container(
-                child: Text(
-                  'qu'.tr()+"${counter}/10",
-                  style: TextStyle(color: Colors.white, fontSize: 20.sp),
+      child: Consumer<myProvider>(
+        builder: (context, provider, index) => Scaffold(
+          backgroundColor: Colors.orange,
+          body: Stack(
+            children: [
+              Positioned(
+                top: 104.h,
+                left: 30.w,
+                child: Container(
+                  child: Text(
+                    'qu'.tr() + "${provider.j}/10",
+                    style: TextStyle(color: Colors.white, fontSize: 20.sp),
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 80.h,
-              left: 20.w,
-              right: 20.w,
-              child: Stack(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    height: 530.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xff7A7FDC),
-                            blurRadius: 0,
-                            offset: Offset(0.w, 25.h), // Shadow position
-                          ),
-                          BoxShadow(
-                            color: Color(0xff9CA2E7),
-                            blurRadius: 2,
-                            offset: Offset(0.w, 15.h), // Shadow position
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 5,
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                left: 10.w, right: 10.w, top: 20.h),
-                            alignment: Alignment.bottomLeft,
-                            child: Row(
-                              mainAxisAlignment: widget.locale==Locale('en')?MainAxisAlignment.spaceBetween:MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  mydata[0][i.toString()],
-                                  style: TextStyle(
-                                    fontSize: 12.0.sp,
-                                  ),
-                                ),
-                              ],
+              Positioned(
+                bottom: 80.h,
+                left: 20.w,
+                right: 20.w,
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      height: 600.h,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.orangeAccent,
+                              blurRadius: 0,
+                              offset: Offset(0.w, 25.h), // Shadow position
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 8,
-                          child: AbsorbPointer(
-                            absorbing: disableAnswer,
+                            BoxShadow(
+                              color: Colors.deepOrange,
+                              blurRadius: 2,
+                              offset: Offset(0.w, 15.h), // Shadow position
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
                             child: Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  choicebutton('a'),
-                                  choicebutton('b'),
-                                  choicebutton('c'),
-                                  choicebutton('d'),
+                              padding: EdgeInsets.only(
+                                left: 10.w,
+                                right: 10.w,
+                              ),
+                              alignment: Alignment.bottomLeft,
+                              child: Row(
+                                mainAxisAlignment:
+                                    provider.locale == Locale('en')
+                                        ? MainAxisAlignment.spaceBetween
+                                        : MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    provider.mydata[0][provider.i.toString()] ??
+                                        'null',
+                                    style: TextStyle(
+                                      fontSize: 12.0.sp,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            margin: EdgeInsets.only(right: 250.w),
-                            child: Text(
-                              'Timer'.tr()+':${showtimer}',
-                              style: TextStyle(
-                                fontSize: 17.0.sp,
-                                fontWeight: FontWeight.w700,
+                          Expanded(
+                            flex: 4,
+                            child: AbsorbPointer(
+                              absorbing: provider.disableAnswer,
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    choiceWidget(k: 'a'),
+                                    choiceWidget(k: 'b'),
+                                    choiceWidget(k: 'c'),
+                                    choiceWidget(k: 'd'),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0.h,
-                    right: 0.w,
-                    child: InkWell(
-                      onTap: () {
-                       nextquestion();
-                        setState(() {
-                          percent += 0.1;
-                        });
-                      },
-                      child: Container(
-                        width: 200.w,
-                        height: 70.h,
-                        margin: EdgeInsets.only(left: 88.w, top: 63.h),
-                        child: Center(
-                            child: Text(
-                          'Next'.tr(),
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 25.sp),
-                        )),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15),
-                              bottomLeft: Radius.circular(15),
-                            ),
-                            color: Colors.orange),
+                        ],
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-                top: 5.h,
-                left: -20.w,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (x) => Homepage()));
-                  },
-                  child: Image.asset(
-                    'images/x.png',
-                    width: 120.w,
-                    height: 120.h,
-                  ),
-                )),
-            Positioned(
-                top: 147.h,
-                left: 20.w,
-                child: Image.asset(
-                  'images/user.png',
-                  width: 120.w,
-                  height: 140.h,
-                )),
-            Positioned(
-              top: 130.h,
-              left: 30.w,
-              child: LinearPercentIndicator(
-                width: 350.0.w,
-                lineHeight: 10.0.h,
-                percent: percent,
-                progressColor: Colors.orange,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget choicebutton(String k) {
-    return InkWell(
-      onTap: () => checkanswer(k),
-      child: Container(
-        margin: EdgeInsets.only(bottom: 20.h),
-        height: 45.h,
-        width: 300.w,
-        decoration: BoxDecoration(
-            color: btncolor[k],
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.grey)),
-        child: Container(
-          margin: EdgeInsets.only(top: 7.h, left: 10.w),
-          child: Row(
-            mainAxisAlignment: widget.locale == Locale('en')
-                ? MainAxisAlignment.start
-                : MainAxisAlignment.end,
-            children: [
-              colortoshow == right
-                  ? Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: Icon(
-                        Icons.check_circle_outline,
-                        color: Colors.white,
+                    Positioned(
+                      bottom: 0.h,
+                      right: 0.w,
+                      child: InkWell(
+                        onTap: () {
+                          provider.nextquestion();
+                        },
+                        child: Container(
+                          width: 200.w,
+                          height: 70.h,
+                          margin: EdgeInsets.only(left: 88.w, top: 63.h),
+                          child: Center(
+                              child: Text(
+                            'Next'.tr(),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 25.sp),
+                          )),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                                bottomLeft: Radius.circular(15),
+                              ),
+                              color: Colors.orange),
+                        ),
                       ),
                     )
-                  : Container(),
-              Text(
-                mydata[1][i.toString()][k],
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16.0.sp,
+                  ],
+                ),
+              ),
+              Positioned(
+                  top: 40.h,
+                  left: -7.w,
+                  child: TextButton(
+                      onPressed: () {
+                        AppRouter.appRouter.goReplacement(Homepage());
+                      },
+                      child: Container(
+                        width: 70,
+                        height: 45,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.deepPurpleAccent),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.black,
+                        ),
+                      ))),
+              Positioned(
+                top: 130.h,
+                left: 30.w,
+                child: LinearPercentIndicator(
+                  width: 350.0.w,
+                  lineHeight: 10.0.h,
+                  percent: provider.percent,
+                  progressColor: Colors.deepPurpleAccent,
                 ),
               ),
             ],

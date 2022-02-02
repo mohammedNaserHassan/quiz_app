@@ -1,6 +1,5 @@
-import 'dart:ui';
+import 'package:quiz_app/Model/Person.dart';
 
-import 'package:easy_localization/easy_localization.dart';
 List<String> images = [
   "images/py.png",
   "images/java.png",
@@ -23,4 +22,5 @@ List<String> imagess = [
   "images/bad.png",
 ];
 String Name='';
+Person xPerson;
 int rowCount=0;

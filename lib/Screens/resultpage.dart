@@ -1,123 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:quiz_app/Data/data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quiz_app/Services/Router.dart';
+import 'package:quiz_app/provider.dart';
 import 'home.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class resultpage extends StatefulWidget {
-  int marks;
-  Locale locale;
-  resultpage({this.marks,this.locale});
+
+  resultpage();
 
   @override
-  _resultpageState createState() => _resultpageState(marks);
+  _resultpageState createState() => _resultpageState();
 }
 
 class _resultpageState extends State<resultpage> {
-  String message, image;
   @override
   void initState() {
-    if (marks < 20) {
-      image = imagess[2];
-      message = "20".tr()+'\n' + "You Scored".tr()+"$marks";
-    } else if (marks < 35) {
-      image = imagess[1];
-      message = "35".tr()+'\n' + "You Scored $marks";
-    } else {
-      image = imagess[0];
-      message = "else".tr()+"\n" + "You Scored $marks";
-    }
+   Provider.of<myProvider>(context,listen: false).calMark();
     super.initState();
   }
 
-  int marks;
-
-  _resultpageState(this.marks);
+  _resultpageState();
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown, DeviceOrientation.portraitUp
     ]);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Result".tr(),
+    return Consumer<myProvider>(
+      builder:(context,provider,index)=> Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.white10,
+          title: Text(
+            "Result".tr(),
+            style: TextStyle(color: Colors.grey),
+          ),
         ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 8,
-            child: Material(
-              elevation: 10.0,
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Material(
-                      child: Container(
-                        width: 300.0.w,
-                        height: 300.0.h,
-                        child: ClipRect(
-                          child: Image(
-                            image: AssetImage(
-                              image,
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 8,
+              child: Material(
+                elevation: 10.0,
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Material(
+                        child: Container(
+                          width: 300.0.w,
+                          height: 300.0.h,
+                          child: ClipRect(
+                            child: Image(
+                              image: AssetImage(
+                                provider.image,
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      SizedBox(height: 20,),
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5.0.h,
+                            horizontal: 15.0.w,
+                          ),
+                          child: Text(
+                             Name,
+                             style: TextStyle(
+                               fontSize: 18.0.sp,
+                             ),
+                              )),
+                  Text(
+                    provider.message,
+                    style: TextStyle(
+                      fontSize: 20.0.sp,
+                      color: Colors.orangeAccent,
+                      fontWeight: FontWeight.w600
                     ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 5.0.h,
-                          horizontal: 15.0.w,
+                  ),
+                      Text(
+                        'من أصل 50',
+                        style: TextStyle(
+                            fontSize: 20.0.sp,
+                            color: Colors.orangeAccent,
+                            fontWeight: FontWeight.w600
                         ),
-                        child: Row(
-                          mainAxisAlignment:widget.locale==Locale('en')?MainAxisAlignment.end:MainAxisAlignment.start,
-                          children: [
-                             Text(
-                                Name+'\n'+message,
-                                style: TextStyle(
-                                  fontSize: 18.0.sp,
-                                ),
-                            ),
-                          ],
-                        )),
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // ignore: deprecated_member_use
-                OutlineButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => Homepage(),
-                    ));
-                  },
-                  child: Text(
-                    "Continue".tr(),
-                    style: TextStyle(
-                      fontSize: 18.0.sp,
+            Expanded(
+              flex: 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // ignore: deprecated_member_use
+                  OutlineButton(
+                    onPressed: () {
+                      AppRouter.appRouter.goReplacement(Homepage());
+                    },
+                    child: Text(
+                      "Continue".tr(),
+                      style: TextStyle(
+                        fontSize: 30.0.sp,
+                      ),
                     ),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 10.0.h,
-                    horizontal: 25.0.w,
-                  ),
-                  borderSide: BorderSide(width: 3.0.w, color: Colors.indigo),
-                  splashColor: Colors.indigoAccent,
-                )
-              ],
-            ),
-          )
-        ],
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10.0.h,
+                      horizontal: 25.0.w,
+                    ),
+                    borderSide: BorderSide(width: 3.0.w, color: Colors.indigo),
+                    splashColor: Colors.indigoAccent,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
